@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { connect } from 'react-redux';
+import { connect } from 'react-redux'; // connects components to redux
 import { Link, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-export const Register = () => {
+import { setAlert } from '../../actions/alert';
+import { register } from '../../actions/auth';
+
+const Register = ({setAlert, register, isAuthenticated}) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -19,12 +22,15 @@ export const Register = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
     if (password !== password2) {
-      console.log('Passwords do not match');
+      setAlert('Passwords do not match', 'danger');
     } else {
+      register({name, email, password});
       console.log('success');
     }
   };
-
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" />;
+  }
   return (
     <section className="container">
       <h1 className="large text-primary">Sign Up</h1>
@@ -80,3 +86,15 @@ export const Register = () => {
     </section>
   );
 };
+
+const mapStateToProps = (state) => ({
+  isAuthenticated: state.auth.isAuthenticated
+});
+
+Register.propTypes = {
+  setAlert: PropTypes.func.isRequired,
+  register: PropTypes.func.isRequired,
+  isAuthenticated: PropTypes.bool.isRequired
+};
+
+export default connect(mapStateToProps, { setAlert, register })(Register);
