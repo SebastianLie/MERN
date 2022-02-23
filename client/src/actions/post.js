@@ -110,9 +110,10 @@ export const addPost = (formData) => async (dispatch) => {
 
 // Get post
 export const getPost = (id) => async (dispatch) => {
+  console.log("Getting Post");
   try {
     const res = await api.get(`/posts/${id}`);
-
+    console.log("Post obtained");
     dispatch({
       type: GET_POST,
       payload: res.data
