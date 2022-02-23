@@ -14,7 +14,6 @@ import {
 export const loadUser = () => async dispatch => {
   console.log("attempting to load user");
   try {
-    console.log("Going to get");
     const res = await api.get('/auth');
     console.log("User Loaded");
     dispatch({
@@ -23,7 +22,6 @@ export const loadUser = () => async dispatch => {
     });
   } catch (err) {
     console.log("Error Loading User");
-    console.log(err.msg);
     dispatch({
       type: AUTH_ERROR
     });
@@ -65,7 +63,6 @@ export const login = (email, password) => async dispatch => {
       payload: res.data
     });
     console.log("Login Success");
-    console.log(res.data);
     dispatch(loadUser());
   } catch (err) {
     const errors = err.response.data.errors;
