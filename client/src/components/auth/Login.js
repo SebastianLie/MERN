@@ -18,7 +18,6 @@ const Login = ({login, isAuthenticated}) => {
   const onSubmit = (e) => {
     e.preventDefault();
     login(email, password);
-    console.log('Success');
   };
   if (isAuthenticated) {
     return <Navigate to="/dashboard" />;
@@ -47,7 +46,6 @@ const Login = ({login, isAuthenticated}) => {
             name="password"
             value={password}
             onChange={onChange}
-            minLength="6"
           />
         </div>
         <input type="submit" className="btn btn-primary" value="Login" />

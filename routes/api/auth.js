@@ -7,16 +7,15 @@ const auth = require('../../middleware/auth');
 const User = require('../../models/User');
 
 const { check, validationResult } = require('express-validator');
-
 // @route GET api/auth
 // @desc  test route
 // @access public
 router.get('/', auth, async (req, res) => {
+    console.log("Getting User Data");
     try {
         const user = await User.findById(req.user.id).select('-password');
         res.json(user);
     } catch(err) {
-        console.log(err);
         res.status(500).send('Server Error');
     }
 });
@@ -30,6 +29,7 @@ router.post('/', [
     check('password', 'Password required').exists()
 ], async (req, res) => {
     // check for errors in the body
+    console.log("Posting Login Credentials");
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return res.status(400).json({errors: errors.array() });

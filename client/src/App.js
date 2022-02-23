@@ -10,6 +10,7 @@ import ProfileForm from './components/profile-forms/ProfileForm';
 import AddExperience from './components/profile-forms/AddExperience';
 import AddEducation from './components/profile-forms/AddEducation';
 import PrivateRoute from './components/routing/PrivateRoute';
+import { LOGOUT } from './actions/types';
 
 // import Register  from './components/auth/Register'; gives an error saying export Register not found!
 /*
@@ -28,14 +29,20 @@ import setAuthToken from './utils/setAuthToken';
 
 import './App.css';
 
-if (localStorage.token) {
-  // if there is a token set axios headers for all requests
-  setAuthToken(localStorage.token);
-}
-
 const App = () => { 
   useEffect(() => {
+    // check for token in LS when app first runs
+    if (localStorage.token) {
+      // if there is a token set axios headers for all requests
+      setAuthToken(localStorage.token);
+    }
+    // try to fetch a user, if no token or invalid token we
+    // will get a 401 response from our API
     store.dispatch(loadUser());
+    // log user out from all tabs if they log out in one tab
+    window.addEventListener('storage', () => {
+      if (!localStorage.token) store.dispatch({ type: LOGOUT });
+    });
   }, []);
   
   return(
